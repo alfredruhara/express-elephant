@@ -8,7 +8,7 @@
         private  $title = 'Express Elephant';
         private  $_dbInstance;
 
-        private static $_instance;
+        private static $_appInstance;
         private static $DS = DIRECTORY_SEPARATOR;
 
         #----------------------------------#
@@ -24,10 +24,10 @@
         }
         
         public static function getInstance() : App {
-            if(is_null(self::$_instance)){
-                self::$_instance = new System();
+            if(is_null(self::$_appInstance)){
+                self::$_appInstance = new App();
             }
-            return self::$_instance;
+            return self::$_appInstance;
         }
 
         public function getTable(string $name) {
@@ -35,13 +35,13 @@
            return new $class_name($this->getDb());
         }
 
-        public function getDb() {
+        public function getDb() : MysqlDatabase {
             $cf = \Expelephant\Config::getInstance(ROOT.DS.'expapp'.DS.'config'.DS.'dbConfig.php');
     
             if (is_null($this->_dbInstance)) {
-                $this->_dbInstance = new MysqlDatabase($cf->get('db_name'), $cf->get('db_user'), $cf->get('db_pass'), $cf->get('db_host'));
+                $this->_dbInstance = new MysqlDatabase($cf->get('dbName'), $cf->get('dbUser'), $cf->get('dbPass'), $cf->get('dbHost'));
             }
-            return $this->db_instance;
+            return $this->_dbInstance;
         }
      
         public function formatInput(string $data) : string {

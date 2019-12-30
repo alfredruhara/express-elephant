@@ -12,7 +12,7 @@
             
             private $pdo;
 
-            public function __construct($dbName, $dbUser= 'root',  $dbPass = '', $dbHost = 'localhost') {
+            public function __construct($dbName, $dbUser='root',  $dbPass='', $dbHost='localhost') {
                 $this->dbName = $dbName;
                 $this->dbUser = $dbUser;
                 $this->dbPass = $dbPass;
@@ -21,7 +21,7 @@
 
             private function getPDO() { 
                 if ($this->pdo === null) {
-                    $pdo = new PDO("mysql:dbname=$this->db_name;dbhost=$this->db_host", $this->db_user, $this->db_pass);
+                    $pdo = new PDO("mysql:dbname=$this->dbName;dbhost=$this->dbHost", $this->dbUser, $this->dbPass);
                     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                     $this->pdo = $pdo;
                 }
@@ -75,22 +75,21 @@
             }
         
             public function count(string $statement,array $attributes = null) {
-                $req = $this->getPDO()->prepare($statement);
+                $request = $this->getPDO()->prepare($statement);
                 
                 if  ($attributes) {
-                    $req->execute($attributes);
+                    $request->execute($attributes);
                 } else {
-                    $req->execute();
+                    $request->execute();
                 }
 
-                $count = $req->rowCount();
-                $req->closeCursor();
+                $count = $request->rowCount();
+                $request->closeCursor();
 
                 return $count;
             }
             
-            public function lastInsertId() : int
-            {
+            public function lastInsertId() : int {
                 return $this->getPDO()->lastInsertId();
             }
        

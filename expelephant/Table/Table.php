@@ -11,7 +11,7 @@
             
             public function __construct(__DatabaseManagement $db) {
                 $this->db = $db;
-            
+                
                 if ($this->table === null) {
                     $parts = explode('\\', get_class($this));
                     $class_name = end($parts);
@@ -56,15 +56,15 @@
             }
 
             public function readAll() {
-                return $this->query("SELECT * FROM $this->table ORDER BY date DESC");
+                return $this->query("SELECT * FROM $this->table");
             }
             
             public function readOne(int $id) {
-                return $this->query("SELECT * FROM $this->table WHERE id = ? ORDER BY date DESC", [$id], true);
+                return $this->query("SELECT * FROM $this->table WHERE id = ? ", [$id], true);
             }
 
             public function readAllBy(int $id) {
-                return $this->query("SELECT * FROM $this->table WHERE id = ? ORDER BY date DESC", [$id]);
+                return $this->query("SELECT * FROM $this->table WHERE id = ? ", [$id]);
             }
             
             public function _list(int $key, string $value, array $records = []) {
@@ -75,6 +75,14 @@
                 }
             
                 return $keyValue ;
+            }
+
+            public function _lastInsertId(){
+                return $this->db->lastInsertId();
+            }
+
+            public function _count(string $statement,array $attributes = null){
+                return $this->db($statement, $attributes);
             }
 
         }

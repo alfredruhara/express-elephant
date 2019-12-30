@@ -1,6 +1,6 @@
 <?php
 
-  namespace Expapp\System {
+  namespace Expapp\App {
 
     class Autoload {
 
@@ -16,7 +16,7 @@
 				$class = str_replace(__NAMESPACE__.self::DS, '', $class);
 				$class = str_replace('\\', self::DS , $class);
 				
-				require __DIR__.slef::DS.$class.'.php';
+				require __DIR__.self::DS.$class.'.php';
 			}
 
 		}
